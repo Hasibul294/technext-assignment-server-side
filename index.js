@@ -17,9 +17,28 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/addEmployee", (req, res) => {
+  const page = req.query.page;
+  const size = parseInt(req.query.size);
   const sqlSelect = "SELECT * FROM employee_info;";
   db.query(sqlSelect, (err, result) => {
-    res.send(result);
+    const dataCount = result.length;
+    let employee_info;
+    if (page) {
+      employee_info = `SELECT * FROM employee_info LIMIT 5 OFFSET ${
+        page * size
+      }`;
+      db.query(employee_info, (err, result) => {
+        res.send({
+          dataCount,
+          result,
+        });
+      });
+    } else {
+      res.send({
+        dataCount,
+        result,
+      });
+    }
   });
 });
 
