@@ -9,7 +9,7 @@ const db = mysql.createPool({
   host: "localhost",
   user: "root",
   password: "password",
-  database: "testdb",
+  database: "technextdb",
 });
 
 app.use(cors());
@@ -24,14 +24,19 @@ app.get("/addEmployee", (req, res) => {
 });
 
 app.post("/addEmployee", (req, res) => {
-  const info = req.body;
-  const fastName = info.fastName;
-  const lastName = info.lastName;
+  const fastName = req.body.fastName;
+  const lastName = req.body.lastName;
+  const email = req.body.email;
+  const companyName = req.body.companyName;
   const sqlInsert =
-    "INSERT INTO employee_info (fastName, lastName) VALUES (?,?);";
-  db.query(sqlInsert, [fastName, lastName], (err, result) => {
-    res.json(result);
-  });
+    "INSERT INTO employee_info (firstName, lastName, email, companyName) VALUES (?,?,?,?);";
+  db.query(
+    sqlInsert,
+    [fastName, lastName, email, companyName],
+    (err, result) => {
+      res.json(result);
+    }
+  );
 });
 
 app.listen(port, () => {
