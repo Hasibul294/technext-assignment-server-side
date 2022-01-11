@@ -5,6 +5,7 @@ const app = express();
 const mysql = require("mysql");
 const port = 5000;
 
+// Connect MySQL Database
 const db = mysql.createPool({
   host: "localhost",
   user: "root",
@@ -12,10 +13,12 @@ const db = mysql.createPool({
   database: "technextdb",
 });
 
+// Middleware
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Create Get request
 app.get("/addEmployee", (req, res) => {
   const page = req.query.page;
   const size = parseInt(req.query.size);
@@ -42,6 +45,7 @@ app.get("/addEmployee", (req, res) => {
   });
 });
 
+// Create Post request
 app.post("/addEmployee", (req, res) => {
   const fastName = req.body.fastName;
   const lastName = req.body.lastName;
@@ -58,6 +62,7 @@ app.post("/addEmployee", (req, res) => {
   );
 });
 
+// Monitoring our connection
 app.listen(port, () => {
   console.log("server is running on port", port);
 });
