@@ -3,7 +3,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
 const mysql = require("mysql");
-const port = 5000;
+const port = process.env.PORT || 5000;
 
 // Connect MySQL Database
 const db = mysql.createPool({
@@ -45,7 +45,7 @@ app.get("/addEmployee", (req, res) => {
   });
 });
 
-// Create Post request
+// Create Post request for adding employee
 app.post("/addEmployee", (req, res) => {
   const fastName = req.body.fastName;
   const lastName = req.body.lastName;
@@ -85,6 +85,11 @@ app.post("/addMultiEmployee", (req, res) => {
       }
     }
   );
+});
+
+// Get request to test our server
+app.get("/", (req, res) => {
+  res.send("Technext server is running.");
 });
 
 // Monitoring our connection
