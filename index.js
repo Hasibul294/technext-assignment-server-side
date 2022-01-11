@@ -62,6 +62,31 @@ app.post("/addEmployee", (req, res) => {
   );
 });
 
+// Create Post for Multiple Employee
+app.post("/addMultiEmployee", (req, res) => {
+  const data = req.body;
+  const sqlInsert =
+    "INSERT INTO employee_info (firstName, lastName, email, companyName) VALUES ?";
+  db.query(
+    sqlInsert,
+    [
+      data.map((item) => [
+        item.firstName,
+        item.lastName,
+        item.email,
+        item.companyName,
+      ]),
+    ],
+    (err, result) => {
+      if (!err) {
+        res.json(result);
+      } else {
+        res.send(err);
+      }
+    }
+  );
+});
+
 // Monitoring our connection
 app.listen(port, () => {
   console.log("server is running on port", port);
